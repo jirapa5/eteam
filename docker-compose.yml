@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  ete-api:
+    container_name: ete-api
+    image: ete-api
+    command: npm run start
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - ete-db
+    volumes:
+    - .:/usr/src/app
+
+  ete-db:
+    container_name: ete-db
+    image: postgres
+    ports:
+      - '5433:${DB_PORT}'
+    volumes:
+      - data:/data/db
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes: 
+ data: {}
